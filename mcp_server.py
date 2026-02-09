@@ -1,7 +1,5 @@
 import yt_dlp
-import json
 from mcp.server.fastmcp import FastMCP
-import asyncio
 import sys
 
 # 创建MCP服务器
