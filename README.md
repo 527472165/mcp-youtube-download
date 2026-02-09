@@ -35,7 +35,7 @@ pip install yt-dlp mcp
 ### 2. 运行服务器
 
 ```bash
-python download.py
+python mcp_server.py
 ```
 
 ### 3. 查看启动信息
