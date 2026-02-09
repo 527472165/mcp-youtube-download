@@ -113,7 +113,7 @@ youtube-download/
 
 ### 自定义输出格式
 
-编辑 `download.py` 中的 `ydl_opts` 参数：
+编辑 `mcp_server.py` 中的 `ydl_opts` 参数：
 
 ```python
 ydl_opts = {
@@ -158,10 +158,6 @@ stderr: ✓ Available tool: download_video(url, output_path)
 ## 🤝 贡献
 
 欢迎提交Issue和Pull Request！
-
-## 📄 许可证
-
-MIT License
 
 ## 📞 支持
 
