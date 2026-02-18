@@ -9,7 +9,7 @@ async def test_youtube_downloader():
     
     # 启动服务器进程，指定UTF-8编码
     process = subprocess.Popen(
-        [sys.executable, "download.py"],
+        [sys.executable, "mcp_server.py"],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
