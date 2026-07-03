@@ -1,4 +1,4 @@
-# YouTube Downloader — MCP Server (English)
+# YouTube Downloader — MCP Server
 
 An MCP (Model Context Protocol) server for downloading YouTube videos. This project exposes a simple MCP tool that AI assistants or other MCP-compatible clients can call to download videos using yt-dlp.
 
