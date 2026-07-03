@@ -2,17 +2,10 @@ import yt_dlp
 from mcp.server.fastmcp import FastMCP
 import sys
 
-# 创建MCP服务器
 mcp = FastMCP("youtube-downloader")
 
 @mcp.tool()
 async def download_video(url: str, output_path: str = ".") -> str:
-    """下载YouTube视频
-    
-    Args:
-        url: YouTube视频URL
-        output_path: 输出文件夹路径
-    """
     try:
         ydl_opts = {
             'outtmpl': f'{output_path}/%(title)s.%(ext)s',
