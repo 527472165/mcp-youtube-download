@@ -1,71 +1,64 @@
-# YouTube Downloader MCP Server
+# YouTube Downloader — MCP Server (English)
 
-一个基于 Model Context Protocol (MCP) 的YouTube视频下载服务器，允许AI助手和其他应用通过标准MCP接口下载YouTube视频。
+An MCP (Model Context Protocol) server for downloading YouTube videos. This project exposes a simple MCP tool that AI assistants or other MCP-compatible clients can call to download videos using yt-dlp.
 
-## ✨ 功能特性
+✨ Features
 
-- 🎬 支持下载YouTube视频
-- 📡 基于MCP协议，易于集成
-- 🔧 可自定义输出路径
-- ⚡ 异步处理，高效运行
-- 🛡️ 完整的错误处理机制
-- 📝 支持中文字符
+- Download YouTube videos using yt-dlp
+- Exposes a tool via MCP protocol for easy integration
+- Configurable output path and filename template
+- Asynchronous and robust error handling
+- Supports Unicode (including Chinese) in filenames
 
-## 📋 系统要求
+System requirements
 
 - Python 3.8+
-- Windows/Linux/macOS
+- Windows / Linux / macOS
 
-## 🚀 快速开始
+Quick start
 
-### 1. 安装依赖
+1. Install dependencies
 
-**方式一：使用 requirements.txt（推荐）**
+Recommended (from repo):
 
-```bash
+```
 pip install -r requirements.txt
 ```
 
-**方式二：直接安装**
+Or install directly:
 
-```bash
+```
 pip install yt-dlp mcp
 ```
 
-### 2. 运行服务器
+2. Run the server
 
-```bash
+```
 python mcp_server.py
 ```
 
-### 3. 查看启动信息
+You should see startup messages on stderr similar to:
 
-启动成功后会看到：
 ```
-🚀 YouTube Downloader MCP Server starting...
-📡 Server is now running and ready to accept connections
-✓ Available tool: download_video(url, output_path)
+stderr: 🚀 YouTube Downloader MCP Server starting...
+stderr: 📡 Server is now running and ready to accept connections
+stderr: ✓ Available tool: download_video(url, output_path)
 ```
 
-## 📖 使用方法
+MCP client API
 
-### MCP 客户端接口
+Tool: `download_video`
 
-#### 工具: `download_video`
+- Parameters:
+  - `url` (string, required): The YouTube video URL to download.
+  - `output_path` (string, optional): Destination folder for the downloaded file. Default: `.` (current directory).
 
-下载指定URL的YouTube视频。
+- Return value:
+  - Success: `"Video downloaded successfully to {output_path}!"`
+  - Failure: `"Error downloading video: {error_message}"`
 
-**参数:**
-| 参数 | 类型 | 必需 | 说明 | 默认值 |
-|------|------|------|------|--------|
-| url | string | ✅ | YouTube视频URL | - |
-| output_path | string | ❌ | 输出文件夹路径 | `.` (当前目录) |
+Example MCP request (JSON-RPC):
 
-**返回值:**
-- 成功: `"Video downloaded successfully to {output_path}!"`
-- 失败: `"Error downloading video: {error_message}"`
-
-**示例请求:**
 ```json
 {
   "jsonrpc": "2.0",
@@ -81,88 +74,82 @@ python mcp_server.py
 }
 ```
 
-## 🧪 测试
+Testing
 
-### 方法1: 直接测试下载功能
+1. Direct function test
 
-```bash
+```
 python test_direct.py
 ```
 
-此方法直接调用下载函数，验证下载功能是否正常。
+2. MCP protocol test
 
-### 方法2: MCP协议测试
-
-```bash
+```
 python test_mcp.py
 ```
 
-此方法模拟MCP客户端，通过MCP协议测试服务器。
-
-## 📁 项目结构
+Project layout
 
 ```
-youtube-download/
-├── download.py           # MCP服务器主文件
-├── test_direct.py        # 直接测试脚本
-├── test_mcp.py          # MCP协议测试脚本
-└── README.md            # 本文件
+mcp-youtube-download/
+├── mcp_server.py        # MCP server implementation
+├── test_direct.py       # Direct download tests
+├── test_mcp.py          # MCP-based tests
+├── requirements.txt     # Python dependencies
+└── README.md            # Original README (Chinese)
 ```
 
-## 🔧 高级配置
+Configuration
 
-### 自定义输出格式
-
-编辑 `mcp_server.py` 中的 `ydl_opts` 参数：
+Edit `mcp_server.py` and adjust `ydl_opts` to change output format and download options. Example:
 
 ```python
 ydl_opts = {
     'outtmpl': f'{output_path}/%(title)s.%(ext)s',
-    'format': 'best',  # 最高质量
-    'quiet': False,     # 显示下载进度
+    'format': 'best',
+    'quiet': False,
 }
 ```
 
-#### 常用选项
+Common yt-dlp options:
 
-- `format`: 指定视频格式 (如 `'best'`, `'worst'`, `'best[ext=mp4]'`)
-- `quiet`: 是否显示详细信息 (true/false)
-- `no_warnings`: 禁用警告 (true/false)
-- `socket_timeout`: 连接超时时间 (秒)
+- `format`: choose video/audio format (e.g. `best`, `worst`, `best[ext=mp4]`).
+- `quiet`: whether to suppress detailed output (True/False).
+- `no_warnings`: disable warnings.
+- `socket_timeout`: network timeout in seconds.
 
-更多选项详见 [yt-dlp官方文档](https://github.com/yt-dlp/yt-dlp#readme)
+Logs
 
-
-## 📝 日志输出
-
-所有启动信息和错误信息输出到 stderr，不影响MCP协议通信。
+Startup and error messages are printed to stderr and do not interfere with MCP communications. Example:
 
 ```
 stderr: 🚀 YouTube Downloader MCP Server starting...
-stderr: 📡 Server is now running and ready to accept connections
-stderr: ✓ Available tool: download_video(url, output_path)
 ```
 
-## 🔐 安全建议
+Security recommendations
 
-1. **URL验证**: 生产环境中应验证输入的YouTube URL
-2. **路径限制**: 限制输出路径到特定目录
-3. **速率限制**: 添加下载请求的频率限制
-4. **错误日志**: 记录所有错误便于调试
+- Validate incoming URLs before downloading in production.
+- Restrict allowed output paths to a safe directory.
+- Add rate-limiting for download requests.
+- Log errors for auditing and debugging.
 
-## 📚 依赖说明
+Dependencies
 
-- **yt-dlp**: YouTube内容下载库（支持yt-dlp, youtube-dl等）
-- **mcp**: Model Context Protocol协议库
+- `yt-dlp`: YouTube downloader library (preferred)
+- `mcp`: Model Context Protocol implementation
 
-## 🤝 贡献
+Contributing
 
-欢迎提交Issue和Pull Request！
+Issues and pull requests are welcome.
 
-## 📞 支持
+Support / Troubleshooting
 
-如遇问题，请检查：
-1. Python版本是否≥3.8
-2. 所有依赖是否已正确安装
-3. 网络连接是否正常
-4. YouTube URL是否有效
+If something fails, check:
+1. Python version is >= 3.8
+2. All dependencies are installed
+3. Network connectivity to YouTube
+4. The provided YouTube URL is valid
+
+License
+
+Include an appropriate license file if you plan to publish this project publicly.
